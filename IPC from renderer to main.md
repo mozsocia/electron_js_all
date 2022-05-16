@@ -35,5 +35,45 @@ main process: electron.js
     })
 ```
 
+## Now reply async
+
+In Preload.js
+```js
+
+ipcRenderer.send('asynchronous-message', 'ping')
+
+ipcRenderer.on('asynchronous-reply', (event, arg) => {
+  console.log(arg) // prints "pong"
+})
+```
+
+In main process.
+```js
+
+ipcMain.on('asynchronous-message', (event, arg) => {
+  console.log(arg) // prints "ping"
+  event.reply('asynchronous-reply', 'pong')
+})
+
+```
+
+## Now reply Sync
+
+In Preload.js
+```js
+const reply = ipcRenderer.sendSync('synchronous-message', 'football') 
+
+console.log(reply) // prints "Cricket"
+```
+
+In main process.
+```js
+ipcMain.on('synchronous-message', (event, arg) => {
+  console.log(arg) // prints "football"
+  event.returnValue = 'Cricket'
+})
+
+```
+
 
  
