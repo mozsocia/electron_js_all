@@ -29,7 +29,7 @@ preload.js
 const { contextBridge, ipcRenderer } = require('electron')
 
 contextBridge.exposeInMainWorld('electronAPI', {
-    sendMessage: () => ipcRenderer.invoke('event:sendMsg').then((result) => {
+    sendMessage: () => ipcRenderer.invoke('event:sendMsg','mymsg').then((result) => {
         // ...
     })
 })
@@ -39,7 +39,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
 main.js
 ```js
 ipcMain.handle('event:sendMsg', async (event, args) => {
-  const result = await doSomeWork(args)
+  const result = await doSomeWork(args) //ars == mymsg
   return result
 })
 
